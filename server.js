@@ -9,11 +9,12 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://superb-crisp-190569.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type"],
   }),
 );
+
 app.options("*", cors());
 app.use(express.json());
 
@@ -28,14 +29,13 @@ app.get("/tasks", async (req, res) => {
     const tasks = await Task.find();
     res.status(200).json(tasks);
   } catch (error) {
+    console.error("GET error:", error);
     res.status(500).json({ message: "Error fetching tasks" });
   }
 });
 
 app.post("/tasks", async (req, res) => {
   try {
-    console.log("POST /tasks body:", req.body);
-
     const newTask = new Task({
       text: req.body.text,
     });
@@ -50,8 +50,6 @@ app.post("/tasks", async (req, res) => {
 
 app.put("/tasks/:id", async (req, res) => {
   try {
-    console.log("PUT /tasks/:id", req.params.id);
-
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -70,8 +68,6 @@ app.put("/tasks/:id", async (req, res) => {
 
 app.delete("/tasks/:id", async (req, res) => {
   try {
-    console.log("DELETE /tasks/:id", req.params.id);
-
     const task = await Task.findByIdAndDelete(req.params.id);
 
     if (!task) {
