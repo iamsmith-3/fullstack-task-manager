@@ -1,4 +1,4 @@
-const apiUrl = "http://127.0.0.1:8000/tasks";
+const apiUrl = "https://fullstack-task-manager-6raj.onrender.com/tasks";
 
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
