@@ -21,8 +21,8 @@ async function fetchTasks() {
         </span>
         <div class="task-buttons">
           <button class="toggle-btn" onclick="toggleTask('${task._id}')">
-            ${task.completed ? "Undo" : "Done"}
-          </button>
+  Toggle
+</button>
           <button class="delete-btn" onclick="deleteTask('${task._id}')">
             Delete
           </button>
