@@ -7,7 +7,14 @@ const Task = require("./models/Task");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.options("*", cors());
 app.use(express.json());
 
 connectDB();
@@ -27,6 +34,8 @@ app.get("/tasks", async (req, res) => {
 
 app.post("/tasks", async (req, res) => {
   try {
+    console.log("POST /tasks body:", req.body);
+
     const newTask = new Task({
       text: req.body.text,
     });
@@ -34,12 +43,15 @@ app.post("/tasks", async (req, res) => {
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
+    console.error("POST error:", error);
     res.status(500).json({ message: "Error creating task" });
   }
 });
 
 app.put("/tasks/:id", async (req, res) => {
   try {
+    console.log("PUT /tasks/:id", req.params.id);
+
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -51,12 +63,15 @@ app.put("/tasks/:id", async (req, res) => {
 
     res.json(task);
   } catch (error) {
+    console.error("PUT error:", error);
     res.status(500).json({ message: "Error updating task" });
   }
 });
 
 app.delete("/tasks/:id", async (req, res) => {
   try {
+    console.log("DELETE /tasks/:id", req.params.id);
+
     const task = await Task.findByIdAndDelete(req.params.id);
 
     if (!task) {
@@ -65,6 +80,7 @@ app.delete("/tasks/:id", async (req, res) => {
 
     res.json({ message: "Task deleted" });
   } catch (error) {
+    console.error("DELETE error:", error);
     res.status(500).json({ message: "Error deleting task" });
   }
 });
